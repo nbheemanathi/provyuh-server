@@ -35,10 +35,23 @@ module.exports = gql`
     username: String!
     createdAt: String!
   }
+  type Recipe{
+    id:ID
+    title: String
+    summary: String
+    image: String
+    imageType: String
+    servings: Int
+    readyInMinutes: Int
+    dishTypes: [String]
+    vegetarian:Boolean
+  }
 
   type Query {
     getPosts: [Post]!
     getPost(postId: ID!): Post
+    getUser(username:String!):User
+    getRandomRecipes(tags:[String]!):[Recipe]
   }
   type Mutation {
     register(registerInput: RegisterInput): User!

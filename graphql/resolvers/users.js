@@ -26,13 +26,18 @@ module.exports = {
       }
       const user = await User.findOne({ username });
       if (!user) {
-        error.general = "User not found";
-        throw new UserInputError("User not found", { errors });
+        
+        throw new UserInputError("User not found", {  errors: {
+          general: "User not found",
+        } });
       }
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        error.general = "Wrong credentials";
-        throw new UserInputError("Wrong Credentials", { errors });
+        // error.general = "Wrong credentials";
+        throw new UserInputError("Wrong Credentials", {
+          errors: {
+            general: "Wrong credentials",
+          }});
       }
       const token = generateToken(user);
       return {
@@ -78,4 +83,18 @@ module.exports = {
       };
     },
   },
+  Query:{
+    async getUser(_, { username }) {
+      try {
+        const user = await User.findOne({username});
+        if (user) {
+          return user;
+        } else {
+          throw new Error("user not found");
+        }
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+  }
 };
