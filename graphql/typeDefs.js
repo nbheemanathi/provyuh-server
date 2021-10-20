@@ -68,6 +68,7 @@ module.exports = gql`
     getPost(postId: ID!): Post
     getUser(username:String!):User
     getRandomRecipes(tags:[String]!):[Recipe]
+    getRandomRecipesOnLimit(tag:String!, number:Int!):[Recipe]
   }
   type Mutation {
     register(registerInput: RegisterInput): User!

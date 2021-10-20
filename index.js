@@ -4,10 +4,17 @@ const typeDefs= require('./graphql/typeDefs')
 const resolvers = require('./graphql/resolvers')
 const { MONGODB } = require("./config");
 const dotenv = require('dotenv');
+const {Recipe_API} = require('./graphql/dataSource.js'); 
 dotenv.config();
 // const pubsub = new PubSub();
 const PORT = process.env.PORT || 5000
-const server = new ApolloServer({ typeDefs, resolvers,context: ({req}) => ({req})});
+const server = new ApolloServer({ typeDefs, resolvers,
+  dataSources:() =>{
+    return {
+      recipeAPI: new Recipe_API()
+    }
+  },
+  context: ({req}) => ({req})});
 console.log(process.env.FOOD_API_URL)
 mongoose
   .connect(MONGODB, { useNewUrlParser: true })
@@ -19,5 +26,5 @@ mongoose
     console.log(res.url);
   })
   .catch(err => {
-    console.error(error)
+    console.error(err)
   })

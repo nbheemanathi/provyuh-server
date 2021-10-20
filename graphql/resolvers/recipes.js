@@ -3,21 +3,20 @@ const dotenv = require("dotenv").config();
 module.exports = {
   Query: {
     async getRandomRecipes(_, { tags }) {
-      const tag = tags[0];
-      const url =
-        "https://api.spoonacular.com/recipes/random?apiKey=8695dcaaae0c4801b22afda4d5e82429&number=12&tags=" +
-        tag;
-
-      console.log(url);
       try {
-        const response = await fetch(url).then((response) => {
-          console.log(response);
-          return response.json();
-        });
-        console.log(response)
+        const response = await fetch(
+          process.env.FOOD_API_URL + `&number=12&tags=${tags.join(",")}`
+        ).then((response) => response.json());
         return response.recipes;
       } catch (error) {
-        console.log(error)
+        throw new Error(error);
+      }
+    },
+    async getRandomRecipesOnLimit(_, { tag, number }, { dataSources }) {
+      try {
+        const data =  await dataSources.recipeAPI.getRandomRecipesOnLimit(number,tag).then((response) => response);
+        return data.recipes;
+      } catch (error) {
         throw new Error(error);
       }
     },
