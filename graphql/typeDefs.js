@@ -35,16 +35,32 @@ module.exports = gql`
     username: String!
     createdAt: String!
   }
+  type ExtendedIngredients {
+    id: Int
+    aisle: String
+    image: String
+    name: String
+    amount: Float
+    unit: String
+  }
   type Recipe{
     id:ID
     title: String
     summary: String
     image: String
     imageType: String
+    dairyFree:Boolean
+    vegan:Boolean
     servings: Int
     readyInMinutes: Int
-    dishTypes: [String]
     vegetarian:Boolean
+    healthScore:Int
+    instructions:String
+    occasions:[String]
+    creditsText:String
+    dishTypes:[String]
+    diets:[String]
+    extendedIngredients:[ExtendedIngredients]
   }
 
   type Query {
