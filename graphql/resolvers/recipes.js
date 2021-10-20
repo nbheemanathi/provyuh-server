@@ -1,12 +1,12 @@
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
-require('dotenv').config();
+const { RECIPE_API_KEY } = require("../../config");
 
 module.exports = {
     Query: {
         async getRandomRecipes(_, { tags }) {
             try {
               const response = await fetch(
-                `https://api.spoonacular.com/recipes/random?apiKey=8695dcaaae0c4801b22afda4d5e82429&number=12&tags=${tags.join(
+                `https://api.spoonacular.com/recipes/random?apiKey=${RECIPE_API_KEY}&number=12&tags=${tags.join(
                   ","
                 )}`
               ).then((response) => response.json());
