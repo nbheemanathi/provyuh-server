@@ -6,7 +6,7 @@ module.exports = {
         async getRandomRecipes(_, { tags }) {
             try {
               const response = await fetch(
-                process.env.FOOD_API_URL+ `&number=12&tags=${tags.join(
+                `https://api.spoonacular.com/recipes/random?apiKey=8695dcaaae0c4801b22afda4d5e82429&number=12&tags=${tags.join(
                   ","
                 )}`
               ).then((response) => response.json());
