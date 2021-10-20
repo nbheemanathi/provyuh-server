@@ -14,8 +14,10 @@ module.exports = {
           console.log(response);
           return response.json();
         });
+        console.log(response)
         return response.recipes;
       } catch (error) {
+        console.log(error)
         throw new Error(error);
       }
     },
