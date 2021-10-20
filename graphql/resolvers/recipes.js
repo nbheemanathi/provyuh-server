@@ -1,6 +1,5 @@
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
-require('dotenv').config();
-
+const dotenv = require('dotenv').config();
 module.exports = {
     Query: {
         async getRandomRecipes(_, { tags }) {
