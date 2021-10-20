@@ -7,7 +7,7 @@ module.exports = {
               const response = await fetch(
                 process.env.FOOD_API_URL+ `&number=12&tags=${tags.join(
                   ","
-                )}`
+                )}/`
               ).then((response) => response.json());
               return response.recipes;
             } catch (error) {
