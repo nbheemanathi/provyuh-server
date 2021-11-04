@@ -6,7 +6,6 @@ const { MONGODB } = require("./config");
 const dotenv = require('dotenv');
 const {Recipe_API} = require('./graphql/dataSource.js'); 
 dotenv.config();
-// const pubsub = new PubSub();
 const PORT = process.env.PORT || 5000
 const server = new ApolloServer({ typeDefs, resolvers,
   dataSources:() =>{
@@ -15,7 +14,6 @@ const server = new ApolloServer({ typeDefs, resolvers,
     }
   },
   context: ({req}) => ({req})});
-console.log(process.env.FOOD_API_URL)
 mongoose
   .connect(MONGODB, { useNewUrlParser: true })
   .then(() => {

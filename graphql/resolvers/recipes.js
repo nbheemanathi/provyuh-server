@@ -1,24 +1,43 @@
+const UserRecipes = require("../../models/UserRecipes");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const dotenv = require("dotenv").config();
+const checkAuth = require("../../util/check-auth");
+
 module.exports = {
   Query: {
-    async getRandomRecipes(_, { tags }) {
+    async getRandomRecipesOnLimit(
+      _,
+      { type, number, addRecipeNutrition, offset },
+      { dataSources }
+    ) {
       try {
-        const response = await fetch(
-          process.env.FOOD_API_URL + `&number=12&tags=${tags.join(",")}`
-        ).then((response) => response.json());
-        return response.recipes;
+        const data = await dataSources.recipeAPI
+          .getRandomRecipesOnLimit(number, type, addRecipeNutrition, offset)
+          .then((response) => response);
+        return data;
       } catch (error) {
         throw new Error(error);
       }
     },
-    async getRandomRecipesOnLimit(_, { tag, number }, { dataSources }) {
-      try {
-        const data =  await dataSources.recipeAPI.getRandomRecipesOnLimit(number,tag).then((response) => response);
-        return data.recipes;
-      } catch (error) {
-        throw new Error(error);
-      }
+  },
+  Mutation: {
+    async saveUserRecipe(_, { recipeId, title, imageUrl }, context) {
+      const user = checkAuth(context);
+      const result = await UserRecipes.findOneAndUpdate(
+        { user: user.id },
+        {
+          $push: {
+            recipes: {
+              title,
+              imageUrl,
+              recipeId,
+            },
+          },
+        },
+        { upsert: true },
+        { new: true }
+      );
+      return result;
     },
   },
 };

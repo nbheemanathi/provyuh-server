@@ -22,14 +22,15 @@ module.exports = {
     async login(_, { username, password }) {
       const { valid, errors } = validateLoginInput(username, password);
       if (!valid) {
-        throw new UserInputError("Errors", {errors});
+        throw new UserInputError("Errors", { errors });
       }
       const user = await User.findOne({ username });
       if (!user) {
-        
-        throw new UserInputError("User not found", {  errors: {
-          general: "User not found",
-        } });
+        throw new UserInputError("User not found", {
+          errors: {
+            general: "User not found",
+          },
+        });
       }
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
@@ -37,7 +38,8 @@ module.exports = {
         throw new UserInputError("Wrong Credentials", {
           errors: {
             general: "Wrong credentials",
-          }});
+          },
+        });
       }
       const token = generateToken(user);
       return {
@@ -57,7 +59,7 @@ module.exports = {
       password = await bcrypt.hash(password, 12);
 
       const user = await User.findOne({ username: username });
-      if(user) {
+      if (user) {
         throw new UserInputError("Username already taken", {
           errors: {
             username: "This username is taken",
@@ -83,10 +85,10 @@ module.exports = {
       };
     },
   },
-  Query:{
+  Query: {
     async getUser(_, { username }) {
       try {
-        const user = await User.findOne({username});
+        const user = await User.findOne({ username });
         if (user) {
           return user;
         } else {
@@ -96,5 +98,5 @@ module.exports = {
         throw new Error(error);
       }
     },
-  }
+  },
 };

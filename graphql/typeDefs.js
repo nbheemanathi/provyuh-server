@@ -35,7 +35,7 @@ module.exports = gql`
     username: String!
     createdAt: String!
   }
-  type ExtendedIngredients {
+  type Ingredients {
     id: Int
     aisle: String
     image: String
@@ -43,32 +43,63 @@ module.exports = gql`
     amount: Float
     unit: String
   }
+  type Nutrients{
+    name: String
+    title:String
+    amount: Float
+    unit: String
+  }
+  type ExtendedInfo{
+    nutrients:[Nutrients]
+    ingredients:[Ingredients]
+  }
+  type InstructionSteps{
+    number:Int
+    step:String
+  }
+  type Instructions{
+    steps:[InstructionSteps]
+  }
   type Recipe{
     id:ID
     title: String
     summary: String
+    servings: Int
+    readyInMinutes: Int
     image: String
     imageType: String
     dairyFree:Boolean
-    vegan:Boolean
-    servings: Int
-    readyInMinutes: Int
+    vegan:Boolean    
     vegetarian:Boolean
     healthScore:Int
-    instructions:String
     occasions:[String]
     creditsText:String
     dishTypes:[String]
     diets:[String]
-    extendedIngredients:[ExtendedIngredients]
+    nutrition:ExtendedInfo
+    analyzedInstructions:[Instructions]
+  }
+  type RecipeResults{
+    results:[Recipe]
+    totalResults:Int
+    offset:Int
+  }
+  type RecipeInfo{
+      recipeId:Int
+      title:String
+      imageUrl:String
+    }
+  type userRecipe{
+    user:ID,
+    id:ID,
+    recipes:[RecipeInfo]
   }
 
   type Query {
     getPosts: [Post]!
     getPost(postId: ID!): Post
     getUser(username:String!):User
-    getRandomRecipes(tags:[String]!):[Recipe]
-    getRandomRecipesOnLimit(tag:String!, number:Int!):[Recipe]
+    getRandomRecipesOnLimit(type:String!, number:Int!, offset:Int!, addRecipeNutrition:Boolean):RecipeResults
   }
   type Mutation {
     register(registerInput: RegisterInput): User!
@@ -78,5 +109,6 @@ module.exports = gql`
     createComment(postId: String!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
+    saveUserRecipe(recipeId: Int!, title:String!, imageUrl:String): userRecipe!
   }
 `;

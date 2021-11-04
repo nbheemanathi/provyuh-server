@@ -15,8 +15,8 @@ const API_URL = "https://api.spoonacular.com/recipes/";
     request.params.set("apiKey", ACCESS_KEY);
   }
 
-  async getRandomRecipesOnLimit(number, tag) {
-    const data = await this.get("random", { number, tag });
+  async getRandomRecipesOnLimit(number, type, addRecipeNutrition, offset) {   
+    const data = await this.get("complexSearch", { number, type, addRecipeNutrition, offset });
     return data;
   }
 }
