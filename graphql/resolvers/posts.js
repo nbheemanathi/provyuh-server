@@ -1,8 +1,8 @@
-const { AuthenticationError, UserInputError } = require("apollo-server-errors");
-const Post = require("../../models/Post");
-const checkAuth = require("../../util/check-auth");
+import { AuthenticationError, UserInputError } from "apollo-server-errors";
+import Post from "../../models/Post.js";
+import checkAuth from "../../util/check-auth.js";
 
-module.exports = {
+export default {
   Query: {
     async getPosts() {
       try {

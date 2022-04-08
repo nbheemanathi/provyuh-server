@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "serve": "node index",
-    "start": "node index"
+    "start": "nodemon index"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "graphql": "^15.6.0",
+    "graphql-tools": "^8.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.8",
     "node-fetch": "^3.0.0"

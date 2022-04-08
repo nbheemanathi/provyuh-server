@@ -1,9 +1,12 @@
-const User = require("../../models/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { SECRET_KEY } = require("../../config");
-const { UserInputError } = require("apollo-server");
-const { validateRegisterInput, validateLoginInput } = require("../../util/validators");
+
+import User from "../../models/User.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import config from "../../config.js";
+import { UserInputError } from "apollo-server";
+import { validateRegisterInput, validateLoginInput } from "../../util/validators.js";
+import UserRecipes from "../../models/UserRecipes.js";
+import recipes from "./recipes.js";
 
 function generateToken(user) {
   return jwt.sign(
@@ -12,12 +15,12 @@ function generateToken(user) {
       email: user.email,
       username: user.username,
     },
-    SECRET_KEY,
+    config.SECRET_KEY,
     { expiresIn: "1h" }
   );
 }
 
-module.exports = {
+export default {
   Mutation: {
     async login(_, { username, password }) {
       const { valid, errors } = validateLoginInput(username, password);
@@ -42,10 +45,13 @@ module.exports = {
         });
       }
       const token = generateToken(user);
+      const userRecipes = await UserRecipes.findOne({user}, 'recipes -_id');
+      const userSavedRecipes = userRecipes?.recipes;
       return {
         ...user._doc,
         id: user._id,
         token,
+        userSavedRecipes
       };
     },
 
@@ -88,7 +94,12 @@ module.exports = {
   Query: {
     async getUser(_, { username }) {
       try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username }).lean();
+        const userSavedRecipes = await UserRecipes.findOne({user})
+        user.id = String(user._id);
+        // if(userSavedRecipes){
+        //   Object.assign(user, {savedRecipes: userSavedRecipes.recipes});
+        // }
         if (user) {
           return user;
         } else {

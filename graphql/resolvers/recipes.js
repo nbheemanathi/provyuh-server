@@ -1,43 +1,71 @@
-const UserRecipes = require("../../models/UserRecipes");
+import UserRecipes from "../../models/UserRecipes.js";
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
-const dotenv = require("dotenv").config();
-const checkAuth = require("../../util/check-auth");
+import dotenv from "dotenv";
+import checkAuth from "../../util/check-auth.js";
+dotenv.config();
 
-module.exports = {
+export default {
   Query: {
     async getRandomRecipesOnLimit(
       _,
-      { type, number, addRecipeNutrition, offset },
+      { recipeInput: { cuisine, type, number, addRecipeNutrition, offset, user } },
       { dataSources }
     ) {
       try {
         const data = await dataSources.recipeAPI
-          .getRandomRecipesOnLimit(number, type, addRecipeNutrition, offset)
+          .getRandomRecipesOnLimit(number, type, cuisine, addRecipeNutrition, offset)
           .then((response) => response);
-        return data;
+
+        const userRecipes = await UserRecipes.findOne({ user }).select("recipes -_id");
+        const selectedRecipes = userRecipes?.recipes || [];
+
+        if (!selectedRecipes.length) {
+          return data;
+        } else {
+          const results = await data.results.map((item) => {
+            const selectedRecipeIndex = selectedRecipes.findIndex(
+              (recipe) => recipe.recipeId === item.id
+            );
+            return Object.assign(item, { liked: selectedRecipeIndex > -1 ? true : false });
+          });
+          Object.assign(data, { results });
+          return data;
+        }
       } catch (error) {
         throw new Error(error);
       }
     },
   },
   Mutation: {
-    async saveUserRecipe(_, { recipeId, title, imageUrl }, context) {
+    async saveUserRecipe(_, { liked, recipeId, title, imageUrl }, context) {
       const user = checkAuth(context);
+      
+
       const result = await UserRecipes.findOneAndUpdate(
         { user: user.id },
-        {
-          $push: {
-            recipes: {
-              title,
-              imageUrl,
-              recipeId,
+        liked
+          ? {
+              $push: {
+                recipes: {
+                  title,
+                  imageUrl,
+                  recipeId,
+                },
+              },
+            }
+          : {
+              $pull: {
+                recipes: {
+                  recipeId,
+                },
+              },
             },
-          },
-        },
-        { upsert: true },
-        { new: true }
+        { upsert: true, new: true }
       );
-      return result;
+      return {
+        recipeId,
+        status: "Liked",
+      };
     },
   },
 };

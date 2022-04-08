@@ -1,10 +1,10 @@
-const postsResolvers = require('./posts');
-const usersResolvers = require('./users');
-const commentsResolvers = require('./comments');
-const recipesResolvers = require('./recipes');
+import postsResolvers from './posts.js';
+import usersResolvers from './users.js';
+import commentsResolvers from './comments.js';
+import recipesResolvers from './recipes.js';
 
 
-module.exports ={
+export default{
     Post:{
         likeCount: (parent) => parent.likes.length,
         commentCount: (parent) => parent.comments.length

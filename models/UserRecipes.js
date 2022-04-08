@@ -1,4 +1,6 @@
-const { model, Schema } = require("mongoose");
+import mongoose from 'mongoose';
+const {model, Schema } = mongoose;
+
 const userRecipeSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -12,5 +14,4 @@ const userRecipeSchema = new Schema({
     },
   ],
 });
-
-module.exports = model("UserRecipe", userRecipeSchema);
+export default model("UserRecipe", userRecipeSchema);

@@ -1,13 +1,13 @@
-const { ApolloServer } = require("apollo-server");
-const mongoose = require("mongoose");
-const typeDefs= require('./graphql/typeDefs')
-const resolvers = require('./graphql/resolvers')
-const { MONGODB } = require("./config");
-const dotenv = require('dotenv');
-const {Recipe_API} = require('./graphql/dataSource.js'); 
+import { ApolloServer } from "apollo-server";
+import  mongoose from "mongoose";
+import schema from './graphql/schema.js';
+import resolvers from './graphql/resolvers/index.js';
+import config from "./config.js";
+import dotenv from 'dotenv';
+import {Recipe_API} from './graphql/dataSource.js'; 
 dotenv.config();
 const PORT = process.env.PORT || 5000
-const server = new ApolloServer({ typeDefs, resolvers,
+const server = new ApolloServer({ schema,
   dataSources:() =>{
     return {
       recipeAPI: new Recipe_API()
@@ -15,7 +15,7 @@ const server = new ApolloServer({ typeDefs, resolvers,
   },
   context: ({req}) => ({req})});
 mongoose
-  .connect(MONGODB, { useNewUrlParser: true })
+  .connect(config.MONGODB, { useNewUrlParser: true })
   .then(() => {
     console.log("data connected");
     return server.listen({ port: PORT });

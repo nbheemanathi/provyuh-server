@@ -1,6 +1,9 @@
-const { RESTDataSource } = require("apollo-datasource-rest");
+import  { RESTDataSource } from "apollo-datasource-rest";
 
-const ACCESS_KEY = "8695dcaaae0c4801b22afda4d5e82429";
+// const ACCESS_KEY = "8695dcaaae0c4801b22afda4d5e82429";
+const ACCESS_KEY = "553bb715ffac4d13ab7fe71e518c12ae";
+
+
 const API_URL = "https://api.spoonacular.com/recipes/";
 
  class Recipe_API extends RESTDataSource {
@@ -15,11 +18,11 @@ const API_URL = "https://api.spoonacular.com/recipes/";
     request.params.set("apiKey", ACCESS_KEY);
   }
 
-  async getRandomRecipesOnLimit(number, type, addRecipeNutrition, offset) {   
-    const data = await this.get("complexSearch", { number, type, addRecipeNutrition, offset });
+  async getRandomRecipesOnLimit(number, type,cuisine, addRecipeNutrition, offset) {   
+    const data = await this.get("complexSearch", { number, type,cuisine, addRecipeNutrition, offset });
     return data;
   }
 }
-module.exports = {
+export {
     Recipe_API
 }

@@ -1,14 +1,15 @@
-const jwt = require("jsonwebtoken");
-const {SECRET_KEY} = require("../config");
-const {AuthenticationError} =  require("apollo-server");
-module.exports = (context) => {
+
+import jwt from "jsonwebtoken";
+import config from '../config.js';
+import {AuthenticationError} from "apollo-server";
+export default (context) => {
     const authHeader = context.req.headers.authorization;
     if(authHeader){
         //Bearer
         const token = authHeader.split('Bearer ')[1];
         if(token){
             try {
-                const user = jwt.verify(token, SECRET_KEY);
+                const user = jwt.verify(token, config.SECRET_KEY);
                 return user;
             } catch (error) {
                 throw new AuthenticationError('Invalid/Expired Token')
