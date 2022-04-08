@@ -38,9 +38,7 @@ export default {
   },
   Mutation: {
     async saveUserRecipe(_, { liked, recipeId, title, imageUrl }, context) {
-      const user = checkAuth(context);
-      
-
+      const user = checkAuth(context);      
       const result = await UserRecipes.findOneAndUpdate(
         { user: user.id },
         liked
