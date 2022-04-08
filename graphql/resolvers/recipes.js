@@ -35,10 +35,14 @@ export default {
         throw new Error(error);
       }
     },
+    async getUserLikedRecipes(_, { userId }, context) {
+      const response = await UserRecipes.findOne({ user : userId});
+      return response.recipes;
+    },
   },
   Mutation: {
     async saveUserRecipe(_, { liked, recipeId, title, imageUrl }, context) {
-      const user = checkAuth(context);      
+      const user = checkAuth(context);
       const result = await UserRecipes.findOneAndUpdate(
         { user: user.id },
         liked
@@ -62,7 +66,9 @@ export default {
       );
       return {
         recipeId,
-        status: "Liked",
+        title,
+        imageUrl,
+        status: liked,
       };
     },
   },

@@ -11,6 +11,7 @@ const typeDefs = gql`
     getPost(postId: ID!): Post
     getUser(username: String!): User
     getRandomRecipesOnLimit(recipeInput: RecipeInput): RecipeResults
+    getUserLikedRecipes(userId: String!): [RecipeInfo]
   }
   type Mutation {
     register(registerInput: RegisterInput): User!

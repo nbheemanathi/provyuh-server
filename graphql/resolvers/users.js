@@ -45,13 +45,13 @@ export default {
         });
       }
       const token = generateToken(user);
-      const userRecipes = await UserRecipes.findOne({user}, 'recipes -_id');
-      const userSavedRecipes = userRecipes?.recipes;
+      // const userRecipes = await UserRecipes.findOne({user}, 'recipes -_id');
+      // const userSavedRecipes = userRecipes?.recipes;
       return {
         ...user._doc,
         id: user._id,
         token,
-        userSavedRecipes
+        // userSavedRecipes
       };
     },
 
@@ -95,7 +95,7 @@ export default {
     async getUser(_, { username }) {
       try {
         const user = await User.findOne({ username }).lean();
-        const userSavedRecipes = await UserRecipes.findOne({user})
+        // const userSavedRecipes = await UserRecipes.findOne({user})
         user.id = String(user._id);
         // if(userSavedRecipes){
         //   Object.assign(user, {savedRecipes: userSavedRecipes.recipes});

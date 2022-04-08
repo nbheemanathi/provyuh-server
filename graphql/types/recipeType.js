@@ -58,8 +58,10 @@ export const recipe = gql`
     imageUrl: String
   }
   type likeStatus {
-    recipeId: Int
     status: String
+    recipeId: Int
+    title: String
+    imageUrl: String
   }
   input RecipeInput {
     type: String

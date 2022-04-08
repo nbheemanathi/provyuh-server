@@ -7,7 +7,6 @@ export const user = gql`
     token: String!
     username: String!
     createdAt: String!
-    userSavedRecipes:[RecipeInfo]
   }
   type userRecipe {
     user: ID
