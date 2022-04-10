@@ -35,8 +35,14 @@ export default {
         throw new Error(error);
       }
     },
+    async getRecipeInformation(_, { id }, { dataSources }) {
+      const data = await dataSources.recipeAPI
+        .getRecipeInformation(id, true)
+        .then((response) => response);
+      return data;
+    },
     async getUserLikedRecipes(_, { userId }, context) {
-      const response = await UserRecipes.findOne({ user : userId});
+      const response = await UserRecipes.findOne({ user: userId });
       return response.recipes;
     },
   },

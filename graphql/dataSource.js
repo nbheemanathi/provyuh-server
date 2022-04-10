@@ -22,6 +22,10 @@ const API_URL = "https://api.spoonacular.com/recipes/";
     const data = await this.get("complexSearch", { number, type,cuisine, addRecipeNutrition, offset });
     return data;
   }
+  async getRecipeInformation(id,includeNutrition,instructionsRequired = true){
+    const data = await this.get(`${encodeURIComponent(id)}/information`,{includeNutrition,instructionsRequired});
+    return data;
+  }
 }
 export {
     Recipe_API
