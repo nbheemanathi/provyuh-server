@@ -66,6 +66,7 @@ export const recipe = gql`
   input RecipeInput {
     type: String
     cuisine: String
+    query:String
     number: Int
     offset: Int
     addRecipeNutrition: Boolean

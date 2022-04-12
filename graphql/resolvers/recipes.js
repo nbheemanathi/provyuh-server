@@ -8,12 +8,12 @@ export default {
   Query: {
     async getRandomRecipesOnLimit(
       _,
-      { recipeInput: { cuisine, type, number, addRecipeNutrition, offset, user } },
+      { recipeInput: {query, cuisine, type, number, addRecipeNutrition, offset, user } },
       { dataSources }
     ) {
       try {
         const data = await dataSources.recipeAPI
-          .getRandomRecipesOnLimit(number, type, cuisine, addRecipeNutrition, offset)
+          .getRandomRecipesOnLimit(number, type, cuisine, addRecipeNutrition, offset, query)
           .then((response) => response);
 
         const userRecipes = await UserRecipes.findOne({ user }).select("recipes -_id");

@@ -18,8 +18,15 @@ const API_URL = "https://api.spoonacular.com/recipes/";
     request.params.set("apiKey", ACCESS_KEY);
   }
 
-  async getRandomRecipesOnLimit(number, type,cuisine, addRecipeNutrition, offset) {   
-    const data = await this.get("complexSearch", { number, type,cuisine, addRecipeNutrition, offset });
+  async getRandomRecipesOnLimit(number, type,cuisine, addRecipeNutrition, offset, query) {   
+    let data = null;
+    if(!query){
+      data = await this.get("complexSearch", { number, type,cuisine, addRecipeNutrition, offset });
+    }
+    else{
+      data = await this.get("complexSearch", { number,  addRecipeNutrition, offset, query });
+
+    }
     return data;
   }
   async getRecipeInformation(id,includeNutrition,instructionsRequired = true){
