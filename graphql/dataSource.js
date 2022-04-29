@@ -1,7 +1,7 @@
 import  { RESTDataSource } from "apollo-datasource-rest";
 
-// const ACCESS_KEY = "8695dcaaae0c4801b22afda4d5e82429";
-const ACCESS_KEY = "553bb715ffac4d13ab7fe71e518c12ae";
+const ACCESS_KEY = "8695dcaaae0c4801b22afda4d5e82429";
+// const ACCESS_KEY = "553bb715ffac4d13ab7fe71e518c12ae";
 
 
 const API_URL = "https://api.spoonacular.com/recipes/";
@@ -24,8 +24,7 @@ const API_URL = "https://api.spoonacular.com/recipes/";
       data = await this.get("complexSearch", { number, type,cuisine, addRecipeNutrition, offset });
     }
     else{
-      data = await this.get("complexSearch", { number,  addRecipeNutrition, offset, query });
-
+      data = await this.get("complexSearch", { number, query, addRecipeNutrition, offset });
     }
     return data;
   }

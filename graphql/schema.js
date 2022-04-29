@@ -4,6 +4,7 @@ import resolvers from "./resolvers/index.js";
 import { user } from "./types/userType.js";
 import { recipe } from "./types/recipeType.js";
 import { misc } from "./types/miscType.js";
+import { event } from "./types/eventType.js";
 
 const typeDefs = gql`
   type Query {
@@ -12,7 +13,7 @@ const typeDefs = gql`
     getUser(username: String!): User
     getRandomRecipesOnLimit(recipeInput: RecipeInput): RecipeResults
     getUserLikedRecipes(userId: String!): [RecipeInfo]
-    getRecipeInformation(id:Int!):Recipe
+    getRecipeInformation(id: Int!): Recipe
   }
   type Mutation {
     register(registerInput: RegisterInput): User!
@@ -22,11 +23,12 @@ const typeDefs = gql`
     createComment(postId: String!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
-    saveUserRecipe(liked:Boolean, recipeId: Int!, title: String!, imageUrl: String): likeStatus!
+    saveUserRecipe(liked: Boolean, recipeId: Int!, title: String!, imageUrl: String): likeStatus!
+    addEvent(eventInput: EventInput): Event!
   }
 `;
 
 export default makeExecutableSchema({
-  typeDefs: [typeDefs, user, recipe, misc],
+  typeDefs: [typeDefs, user, recipe, misc, event],
   resolvers,
 });

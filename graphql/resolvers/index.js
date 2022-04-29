@@ -2,7 +2,7 @@ import postsResolvers from './posts.js';
 import usersResolvers from './users.js';
 import commentsResolvers from './comments.js';
 import recipesResolvers from './recipes.js';
-
+import eventResolvers from './event.js'
 
 export default{
     Post:{
@@ -12,12 +12,14 @@ export default{
     Query: {
         ...postsResolvers.Query,
         ...usersResolvers.Query,
-        ...recipesResolvers.Query
+        ...recipesResolvers.Query,
+        ...eventResolvers.Query
     },
     Mutation:{
         ...usersResolvers.Mutation,
         ...postsResolvers.Mutation,
         ...commentsResolvers.Mutation,
-        ...recipesResolvers.Mutation
+        ...recipesResolvers.Mutation,
+        ...eventResolvers.Mutation
     }
 }
