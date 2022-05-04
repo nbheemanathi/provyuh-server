@@ -6,11 +6,28 @@ input EventInput {
     start:String
     end: String
     type: String
-    description: String
+    notes: String
     user: String
+    links:[LinkInfo]
   }
-
+  input LinkInfo {
+    linkId: Int
+    title: String
+    imageUrl: String
+  }
   type Event {
     id: ID!
+    title:String!
+    allDay:Boolean!
+    start:DateTime!
+    end:DateTime!
+    notes:String
+    links:[Link]
+    user:String!
+  }
+  type Link {
+    linkId: Int!
+    title: String
+    imageUrl: String
   }
 `

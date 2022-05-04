@@ -5,6 +5,7 @@ import { user } from "./types/userType.js";
 import { recipe } from "./types/recipeType.js";
 import { misc } from "./types/miscType.js";
 import { event } from "./types/eventType.js";
+import { DateTimeTypeDefinition } from 'graphql-scalars';
 
 const typeDefs = gql`
   type Query {
@@ -14,6 +15,7 @@ const typeDefs = gql`
     getRandomRecipesOnLimit(recipeInput: RecipeInput): RecipeResults
     getUserLikedRecipes(userId: String!): [RecipeInfo]
     getRecipeInformation(id: Int!): Recipe
+    getUserEvents: [Event]
   }
   type Mutation {
     register(registerInput: RegisterInput): User!
@@ -29,6 +31,6 @@ const typeDefs = gql`
 `;
 
 export default makeExecutableSchema({
-  typeDefs: [typeDefs, user, recipe, misc, event],
+  typeDefs: [DateTimeTypeDefinition, typeDefs, user, recipe, misc, event],
   resolvers,
 });
