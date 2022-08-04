@@ -1,6 +1,8 @@
 import  { RESTDataSource } from "apollo-datasource-rest";
+import dotenv from 'dotenv';
+dotenv.config();
 
-const ACCESS_KEY = "8695dcaaae0c4801b22afda4d5e82429";
+const ACCESS_KEY = process.env.RECIPE_API_KEY;
 // const ACCESS_KEY = "553bb715ffac4d13ab7fe71e518c12ae";
 
 

@@ -1,12 +1,11 @@
-
 import User from "../../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import config from "../../config.js";
 import { UserInputError } from "apollo-server";
 import { validateRegisterInput, validateLoginInput } from "../../util/validators.js";
 import UserRecipes from "../../models/UserRecipes.js";
 import recipes from "./recipes.js";
+import { MailService } from "@sendgrid/mail";
 
 function generateToken(user) {
   return jwt.sign(
@@ -15,7 +14,7 @@ function generateToken(user) {
       email: user.email,
       username: user.username,
     },
-    config.SECRET_KEY,
+    process.env.SECRET_KEY,
     { expiresIn: "1h" }
   );
 }
@@ -83,7 +82,7 @@ export default {
       const res = await newUser.save();
 
       const token = generateToken(res);
-
+      emailService("nbheemanathi@gmail.com")
       return {
         ...res._doc,
         id: res._id,

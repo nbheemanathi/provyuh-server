@@ -1,8 +1,6 @@
 import { ApolloServer } from "apollo-server";
 import  mongoose from "mongoose";
 import schema from './graphql/schema.js';
-import resolvers from './graphql/resolvers/index.js';
-import config from "./config.js";
 import dotenv from 'dotenv';
 import {Recipe_API} from './graphql/dataSource.js'; 
 dotenv.config();
@@ -15,7 +13,7 @@ const server = new ApolloServer({ schema,
   },
   context: ({req}) => ({req})});
 mongoose
-  .connect(config.MONGODB, { useNewUrlParser: true })
+  .connect(process.env.MONGODB, { useNewUrlParser: true })
   .then(() => {
     console.log("data connected");
     return server.listen({ port: PORT });

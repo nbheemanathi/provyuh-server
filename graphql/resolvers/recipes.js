@@ -2,6 +2,10 @@ import UserRecipes from "../../models/UserRecipes.js";
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 import dotenv from "dotenv";
 import checkAuth from "../../util/check-auth.js";
+import sgMail from '@sendgrid/mail'
+import emailService from "../../util/emailService.js";
+
+
 dotenv.config();
 
 export default {
@@ -44,6 +48,7 @@ export default {
     async getUserLikedRecipes(_, { userId }, context) {
       const response = await UserRecipes.findOne({ user: userId });
       return response.recipes;
+
     },
   },
   Mutation: {

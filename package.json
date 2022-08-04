@@ -5,13 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "serve": "node index",
-    "start": "node index"
+    "serve": "nodemon index",
+    "start": "nodemon index"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "apollo-datasource-rest": "^3.3.0",
     "apollo-server": "^3.3.0",
     "bcryptjs": "^2.4.3",
