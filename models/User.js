@@ -8,15 +8,6 @@ const userSchema = new Schema({
   password: String,
   email: String,
   phone: String,
-  company: {
-    type: Schema.Types.ObjectId,
-    ref: "companies",
-  },
-  role: {
-    type: Schema.Types.ObjectId,
-    ref: "roles",
-  },
-  deletedAt: Date,
   createdAt: String,
 });
 
