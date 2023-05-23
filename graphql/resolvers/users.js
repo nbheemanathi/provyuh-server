@@ -5,7 +5,8 @@ import { UserInputError } from "apollo-server";
 import { validateRegisterInput, validateLoginInput } from "../../util/validators.js";
 import UserRecipes from "../../models/UserRecipes.js";
 import recipes from "./recipes.js";
-import { MailService } from "@sendgrid/mail";
+// import { MailService } from "@sendgrid/mail";
+import emailService from "../../util/emailService.js";
 
 function generateToken(user) {
   return jwt.sign(

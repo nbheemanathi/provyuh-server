@@ -1,9 +1,8 @@
 import { ApolloServer } from "apollo-server";
 import  mongoose from "mongoose";
 import schema from './graphql/schema.js';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import {Recipe_API} from './graphql/dataSource.js'; 
-import seedDb from "./models/seed.js";
 dotenv.config();
 const PORT = process.env.PORT || 5000
 const server = new ApolloServer({ schema,
@@ -17,7 +16,7 @@ mongoose
   .connect(process.env.MONGODB, { useNewUrlParser: true })
   .then(() => {
     console.log("data connected");
-    seedDb()
+    // seedDb()
     return server.listen({ port: PORT });
   })
   .then((res) => {
