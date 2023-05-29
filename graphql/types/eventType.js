@@ -1,4 +1,4 @@
-import { gql } from "apollo-server";
+import gql from 'graphql-tag';
 export const event = gql`
 input EventInput {
     title: String

@@ -1,6 +1,7 @@
 
 import jwt from "jsonwebtoken";
-import {AuthenticationError} from "apollo-server";
+// import {AuthenticationError} from "apollo-server";
+import { GraphQLError } from 'graphql';
 export default (context) => {
     const authHeader = context.req.headers.authorization;
     if(authHeader){
@@ -11,7 +12,7 @@ export default (context) => {
                 const user = jwt.verify(token, process.env.SECRET_KEY);
                 return user;
             } catch (error) {
-                throw new AuthenticationError('Invalid/Expired Token')
+                throw new GraphQLError('Invalid/Expired Token')
             }
         }
         throw new Error('Authentication token must be \' Bearer [token]' )

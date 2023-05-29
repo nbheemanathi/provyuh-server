@@ -1,7 +1,8 @@
 import User from "../../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { UserInputError } from "apollo-server";
+// import { UserInputError } from "apollo-server";
+import { GraphQLError } from 'graphql';
 import { validateRegisterInput, validateLoginInput } from "../../util/validators.js";
 import UserRecipes from "../../models/UserRecipes.js";
 import recipes from "./recipes.js";
@@ -25,11 +26,11 @@ export default {
     async login(_, { username, password }) {
       const { valid, errors } = validateLoginInput(username, password);
       if (!valid) {
-        throw new UserInputError("Errors", { errors });
+        throw new GraphQLError("Errors", { errors });
       }
       const user = await User.findOne({ username });
       if (!user) {
-        throw new UserInputError("User not found", {
+        throw new GraphQLError("User not found", {
           errors: {
             general: "User not found",
           },
@@ -38,7 +39,7 @@ export default {
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
         // error.general = "Wrong credentials";
-        throw new UserInputError("Wrong Credentials", {
+        throw new GraphQLError("Wrong Credentials", {
           errors: {
             general: "Wrong credentials",
           },
@@ -58,7 +59,7 @@ export default {
     async register(_, { registerInput: { username, email, password, confirmPassword } }) {
       const { valid, errors } = validateRegisterInput(username, email, password, confirmPassword);
       if (!valid) {
-        throw new UserInputError("Errors", {
+        throw new GraphQLError("Errors", {
           errors,
         });
       }
@@ -66,7 +67,7 @@ export default {
 
       const user = await User.findOne({ username: username });
       if (user) {
-        throw new UserInputError("Username already taken", {
+        throw new GraphQLError("Username already taken", {
           errors: {
             username: "This username is taken",
           },

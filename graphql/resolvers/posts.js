@@ -1,4 +1,6 @@
-import { AuthenticationError, UserInputError } from "apollo-server-errors";
+// import { AuthenticationError, UserInputError } from "apollo-server-errors";
+import { GraphQLError } from 'graphql';
+
 import Post from "../../models/Post.js";
 import checkAuth from "../../util/check-auth.js";
 
@@ -52,7 +54,7 @@ export default {
           await post.delete();
           return "Post deleted successfully";
         } else {
-          throw new AuthenticationError("Action not allowed");
+          throw new GraphQLError("Action not allowed");
         }
       } catch (error) {
         throw new Error(error);
@@ -76,7 +78,7 @@ export default {
 
         await post.save();
         return post;
-      } else throw new UserInputError("Post not found");
+      } else throw new GraphQLError("Post not found");
     },
   },
 };

@@ -1,13 +1,14 @@
-import { AuthenticationError, UserInputError } from 'apollo-server';
+// import { AuthenticationError, UserInputError } from 'apollo-server';
 import checkAuth from "../../util/check-auth.js";
 import Post from '../../models/Post.js';
+import { GraphQLError } from 'graphql';
 
 export default {
   Mutation: {
     createComment: async (_, { postId, body }, context) => {
       const { username } = checkAuth(context);
       if (body.trim() === "") {
-        throw new UserInputError("Empty comment", {
+        throw new GraphQLError("Empty comment", {
           errors: {
             body: "Comment body must not empty",
           },
@@ -23,7 +24,7 @@ export default {
         });
         await post.save();
         return post;
-      } else throw new UserInputError("Post not found");
+      } else throw new GraphQLError("Post not found");
     },
     async deleteComment(_, { postId, commentId }, context) {
         const { username } = checkAuth(context);
@@ -38,10 +39,10 @@ export default {
             await post.save();
             return post;
           } else {
-            throw new AuthenticationError('Action not allowed');
+            throw new GraphQLError('Action not allowed');
           }
         } else {
-          throw new UserInputError('Post not found');
+          throw new GraphQLError('Post not found');
         }
       }
   },
