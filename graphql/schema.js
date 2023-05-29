@@ -1,4 +1,4 @@
-import { gql } from "apollo-server";
+import gql from 'graphql-tag';
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import resolvers from "./resolvers/index.js";
 import { user } from "./types/userType.js";
